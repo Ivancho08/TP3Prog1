@@ -4,60 +4,68 @@ require_once 'Alumno.php';
 
 class AlumnoPresencial extends Alumno{
 
-    private $notaFinal;
-    private $inasistencias;
+    public $notaFinal;
     private $notas;
+    private $inasistencias;
+    private $sumaNotas;
     public static $diasHabiles;
-    private $bandera = true;
-    private $promedio;
-    private $porc;
+    
 
-    public function __construct($nombre, $apellido, $dni, $notaFinal = null){
+
+    public function __construct($nombre, $apellido, $dni, $inasistencias, $notas, $notaFinal = null){
 
         parent::__construct($nombre, $apellido, $dni);
-    }
-
-    public static function setDiasHabiles(){
-        return self::$diasHabiles;
-    }
-
-
-    public function porcentajeAsistancia(){
-
-        $asistencia = $diasHabiles - $this->inasistencias;
-        $this->porc = ($asistencia * 100)/$diasHabiles;
+        $this->inasistencias = $inasistencias;
+        $this->notas = $notas;
+        $this->notaFinal = $notaFinal;
         
-        return int($this->porc);
     }
 
-    public function calcularPromedio(){
+    public static function setDiasHabiles($d){
+        self::$diasHabiles = $d;
+    }
 
-        for($i=0; $i < count($this->notas); $i++){
-            if ($this->notas[$i] >= 4){
-                $sumaNota = $sumaNota + $this->notas[$i];
-            } else {
-                $this->bandera = false;
+    public function porcAsistencia(){
+
+        $asist =  self::$diasHabiles- $this->inasistencias;
+        $porcentaje = ($asist*100)/self::$diasHabiles;
+
+        return $porcentaje;
+    }
+
+    public function promNotas(){
+
+        for($i = 0; $i < count($this->notas); $i++){
+            if($this->notas[$i] >= 4){
+                $this->sumaNotas = $this->sumaNotas + $this->notas[$i];
             }
         }
 
-        $this->promedio = $sumaNota / count($this->notas);
-        
-        return ($this->promedio);
+        $promedio = ($this->sumaNotas / count($this->notas));
+
+        for ($i = 0; $i < count($this->notas); $i++){
+            if($this->notas[$i] < 4){
+                $promedio = 1;
+            }
+        }
+
+        return $promedio;
+
     }
 
     public function getNota(){
 
-        if($this->bandera == true && $this->porc >= 75){
-            $this->notaFinal = $this->promedio;
+        if($this->promNotas()>=4 && $this->porcAsistencia() >= 75){
+            $this->notaFinal = $this->promNotas();
             return $this->notaFinal;
         } else {
-            $this->notaFinal = 1;
-            return $this->notaFinal;
+            return $this->notaFinal = 1;
         }
     }
 
+
     public function __toString(){
-        return $this->nombre . " " . $this->apellido . " " . $this->dni . " " . $this->notaFinal;
+        return $this->nombre . " " . $this->apellido . " " . $this->dni . " " . $this->notaFinal . " largo cadeda " . count($this->notas) . " suma " . $this->sumaNotas;
     }
 
 
