@@ -19,9 +19,9 @@ elseif ( $_POST['tipo'] == 'presencial' ) {
 //(aunque estaría bueno). Simplemente entender que el archivo "arma" un array, y
 //lo muestra convertido en otro formato (JSON).
 
-#$datos['alumno'] = $alumno->getNombreApellido();
-#$datos['dni'] = $alumno->getDni();
-#$datos['nota'] = $alumno->getNota();
+$datos['alumno'] = $alumno->getNombreApellido();
+$datos['dni'] = $alumno->getDni();
+$datos['nota'] = $alumno->getNota();
 
 //Para probar el método __toString():
 $datos['cadena'] = "Datos del alumno: " . $alumno;

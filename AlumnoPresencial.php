@@ -40,8 +40,7 @@ class AlumnoPresencial extends Alumno{
                 $this->sumaNotas = $this->sumaNotas + $this->notas[$i];
             }
         }
-
-        $promedio = ($this->sumaNotas / count($this->notas));
+        $promedio = $this->sumaNotas / count($this->notas);
 
         for ($i = 0; $i < count($this->notas); $i++){
             if($this->notas[$i] < 4){
